@@ -1,0 +1,5 @@
+TCGCAC
+CCGCGGC
+-2
+-1
+1
