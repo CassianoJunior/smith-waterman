@@ -14,11 +14,11 @@ def create_initial_matrix(sequence1: str, sequence2: str) -> list[list[int | str
 
   # Add gap labels
   lower_left_corner_row = len(sequence2) + 1
-  lower_left_corder_column = 0
+  lower_left_corner_column = 0
 
-  matrix[lower_left_corner_row][lower_left_corder_column] = ' '
-  matrix[lower_left_corner_row - 1][lower_left_corder_column] = '-'
-  matrix[lower_left_corner_row][lower_left_corder_column + 1] = '-'
+  matrix[lower_left_corner_row][lower_left_corner_column] = ' '
+  matrix[lower_left_corner_row - 1][lower_left_corner_column] = '-'
+  matrix[lower_left_corner_row][lower_left_corner_column + 1] = '-'
 
   # Add row labels
   inverted_sequence_2 = sequence2[::-1]
@@ -35,15 +35,12 @@ def create_initial_matrix(sequence1: str, sequence2: str) -> list[list[int | str
   for i in range(len(sequence2) - 1, -1, -1):
     matrix[i][1] = (len(sequence2) - i) * gap
 
-  matrix[lower_left_corner_row - 1][lower_left_corder_column + 1] = 0
+  matrix[lower_left_corner_row - 1][lower_left_corner_column + 1] = 0
 
   # Return the matrix
   return matrix
 
-def get_score(source_char: str, target_char: str, gap: int, match: int, mismatch: int) -> int:
-  if "-" in [source_char, target_char]:
-    return gap
-  
+def get_score(source_char: str, target_char: str, match: int, mismatch: int) -> int:  
   return match if source_char == target_char else mismatch 
 
 def traceback(matrix: list[list[int | str]], sequence1: str, sequence2: str):
@@ -52,19 +49,19 @@ def traceback(matrix: list[list[int | str]], sequence1: str, sequence2: str):
   alignment1 = ''
   alignment2 = ''
 
-  breakpointRow = len(sequence2)
-  breakpointColumn = 1
+  breakpoint_row = len(sequence2)
+  breakpoint_column = 1
 
   while True:
-    if i == breakpointRow:
-      while j > breakpointColumn:
+    if i == breakpoint_row:
+      while j > breakpoint_column:
         alignment1 = sequence1[j - 2] + alignment1
         alignment2 = '-' + alignment2
         j -= 1
       break
   
-    if j == breakpointColumn:
-      while i < breakpointRow:
+    if j == breakpoint_column:
+      while i < breakpoint_row:
         alignment1 = '-' + alignment1
         alignment2 = sequence2[len(sequence2) - 1 - i] + alignment2
         i += 1
@@ -80,7 +77,7 @@ def traceback(matrix: list[list[int | str]], sequence1: str, sequence2: str):
     if (type(left_score) == str):
       left_score = 0
 
-    if current_score == diagonal_score + get_score(sequence1[j - 2], sequence2[len(sequence2) - 1 - i], gap, match, mismatch):
+    if current_score == diagonal_score + get_score(sequence1[j - 2], sequence2[len(sequence2) - 1 - i], match, mismatch):
       alignment1 = sequence1[j - 2] + alignment1
       alignment2 = sequence2[len(sequence2) - 1 - i] + alignment2
       i += 1
@@ -132,14 +129,14 @@ if __name__ == '__main__':
   # Create the initial matrix
   matrix = create_initial_matrix(sequence1, sequence2)
 
-  # Print initial matrix
-  print('Initial score matrix')
-  print_matrix(matrix)
+  # # Print initial matrix
+  # print('Initial score matrix')
+  # print_matrix(matrix)
   
   # Fill the matrix
   for i in range(len(sequence2) - 1, -1, -1):
     for j in range(2, len(sequence1) + 2):
-      with_match = matrix[i+1][j-1] + get_score(sequence1[j - 2], sequence2[len(sequence2) - 1 - i], gap, match, mismatch)
+      with_match = matrix[i+1][j-1] + get_score(sequence1[j - 2], sequence2[len(sequence2) - 1 - i], match, mismatch)
       with_gap_sequence1 = matrix[i][j - 1] + gap
       with_gap_sequence2 = matrix[i + 1][j] + gap
 
