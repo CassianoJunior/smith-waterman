@@ -10,15 +10,19 @@ O Backtrace deve ser do aultima linha x ultima coluna, independente do score cal
 
 Exemplo de matriz de escores dizendo como deve ser feito o Backtrace:
 
-------------------------
 ** valores de score **
-========================
+
 -8 -5 -2 1 (escolhido será sempre esse para backtrace)
+
 -6 -3 0 -2
+
 -4 -1 -2 -4
+
 -2 -1 -3 -5
+
 0 -2 -4 -6
-=======================
+
+
 
 *** COMO DEVE SER A ENTRADA ***:
 arquivo texto com as duas sequencias. Uma sequencia em cada linha
@@ -38,26 +42,36 @@ Na linha 5 colocar o valor de match
 Exemplo de arquivo:
 
 ATC
+
 TCG
+
 -2
+
 -1
+
 1
  
 
 *** COMO DEVE SER A SAIDA ***:
 
---------------------------------------------------------------------------------
+
 ** valores de score **
-================================================================================
+
 G -8 -5 -2 1 <-- pegue sempre o da ultima linha e coluna para backtrace
+
 C -6 -3 0 -2
+
 T -4 -1 -2 -4
+
 A -2 -1 -3 -5
+
 U 0 -2 -4 -6
+
 X U T C G
-================================================================================
-------------------------------------------------------------------
+
+
 Alinhamento ** score = 1 ** Match = 1 | mismatch = -1 | Gap = -2
-------------------------------------------------------------------
+
 A T C G
-- T C G
+
+_ T C G
