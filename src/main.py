@@ -7,11 +7,22 @@ def print_matrix(matrix: list[list[int]]):
       print(f'{matrix[i][j]:>3}', end=' ')
     print()
 
+def export_result(matrix: list[list[int]], file_path: str, sequence1: str, sequence2: str, gap: int, match: int, mismatch: int, max_score: int):
+  with open(file_path, 'w') as file:
+    for i in range(len(matrix)):
+      for j in range(len(matrix[i])):
+        file.write(f'{matrix[i][j]:>3} ')
+      file.write('\n')
+    
+    file.write('\n')
+    file.write(f'Alignment ** score = {max_score} ** Match = {match} | Mismatch = {mismatch} | Gap = {gap}\n')
+    file.write('Sequence 1: ' + sequence1 + '\n')
+    file.write('Sequence 2: ' + sequence2 + '\n')
+
 def create_initial_matrix(sequence1: str, sequence2: str) -> list[list[int | str]]:
   # Create the matrix with labels
   matrix = [[0 for _ in range(len(sequence1) + 2)] for _ in range(len(sequence2) + 2)]
   
-
   # Add gap labels
   lower_left_corner_row = len(sequence2) + 1
   lower_left_corner_column = 0
@@ -70,12 +81,6 @@ def traceback(matrix: list[list[int | str]], sequence1: str, sequence2: str):
     current_score = matrix[i][j]
     diagonal_score = matrix[i + 1][j - 1]
     left_score = matrix[i][j - 1]
-
-    if (type(diagonal_score) == str):
-      diagonal_score = 0
-
-    if (type(left_score) == str):
-      left_score = 0
 
     if current_score == diagonal_score + get_score(sequence1[j - 2], sequence2[len(sequence2) - 1 - i], match, mismatch):
       alignment1 = sequence1[j - 2] + alignment1
@@ -170,5 +175,9 @@ if __name__ == '__main__':
 
   print(align1)
   print(align2)
+
+  # Export the result
+  output_file_path = path.join(path.dirname(__file__), 'output.txt')
+  export_result(matrix, output_file_path, align1, align2, gap, match, mismatch, max_score)
 
   
